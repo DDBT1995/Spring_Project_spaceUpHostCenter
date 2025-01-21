@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sist.web.dao.QuestionReportDao">
+	<!-- 문의 신고 등록 -->
+	<insert id="insertQuestionReport" parameterType="com.sist.web.model.QuestionReport">
+		<!-- 선행 -->
+		<selectKey resultType="long" keyProperty="questionReportId" order="BEFORE">
+			SELECT SEQ_QUESTION_REPORT_ID.NEXTVAL FROM DUAL
+		</selectKey>
+		
+		INSERT INTO QUESTION_REPORT (
+		    QUESTION_REPORT_ID,
+		    SPACE_QUESTION_ID,
+		    HOST_EMAIL,
+		    REPORT_REASON,
+		    REPORT_DATE,
+		    STATUS
+		) VALUES (
+		    #{questionReportId},
+		    #{spaceQuestionId},
+		    #{hostEmail},
+		    #{reportReason},
+		    SYSDATE,
+		    'W'
+		)
+	</insert>
+</mapper>

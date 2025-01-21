@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sist.web.dao.SpaceAnswerDao">
+	<!-- 호스트 문의 답변 resultMap -->
+	<resultMap type="com.sist.web.model.SpaceAnswer" id="answerResultMap">
+		<id column="SPACE_ANSWER_ID" property="spaceAnswerId" />
+		<result column="SPACE_QUESTION_ID" property="spaceQuestionId" />
+		<result column="HOST_EMAIL" property="hostEmail" />
+		<result column="ANSWER_CONTENT" property="answerContent" />
+		<result column="STATUS" property="status" />
+		<result column="REG_DATE" property="regDate" />
+		<result column="MODI_DATE" property="modiDate" />
+		<result column="DEL_DATE" property="delDate" />
+		<result column="HOST_NICKNAME" property="hostNickname" />
+	</resultMap>
+
+	<!-- 호스트 문의 답변 조회 -->
+	<select id="hostAnswerList" parameterType="long" resultMap="answerResultMap">
+		SELECT SA.SPACE_ANSWER_ID SPACE_ANSWER_ID,
+		       SA.SPACE_QUESTION_ID SPACE_QUESTION_ID,
+		       NVL(SA.HOST_EMAIL, '') HOST_EMAIL,
+		       NVL(SA.ANSWER_CONTENT, '') ANSWER_CONTENT,
+		       NVL(SA.STATUS, '') STATUS,
+		       NVL(TO_CHAR(SA.REG_DATE, 'YYYY. MM. DD'), '') REG_DATE,
+		       NVL(TO_CHAR(SA.MODI_DATE, 'YYYY. MM. DD'), '') MODI_DATE,
+		       NVL(TO_CHAR(SA.DEL_DATE, 'YYYY. MM. DD'), '') DEL_DATE,
+		       NVL(H.HOST_NICKNAME, '') HOST_NICKNAME
+		  FROM SPACE_ANSWER SA, HOST H
+		 WHERE SA.HOST_EMAIL = H.HOST_EMAIL
+		   AND SPACE_QUESTION_ID = #{spaceQuestionId}
+		 ORDER BY SA.REG_DATE DESC
+	</select>
+	
+	<!-- 호스트 문의 답변 등록 -->
+	<insert id="insertAnswer" parameterType="com.sist.web.model.SpaceAnswer">
+		<!-- 선행 처리기 -->
+		<selectKey resultType="long" keyProperty="spaceAnswerId" order="BEFORE">
+			SELECT SEQ_SPACE_ANSWER_ID.NEXTVAL FROM DUAL
+		</selectKey>
+		
+		INSERT INTO SPACE_ANSWER (
+		    SPACE_ANSWER_ID,
+		    SPACE_QUESTION_ID,
+		    HOST_EMAIL,
+		    ANSWER_CONTENT,
+		    STATUS,
+		    REG_DATE,
+		    MODI_DATE,
+		    DEL_DATE
+		) VALUES (
+		    #{spaceAnswerId},
+		    #{spaceQuestionId},
+		    #{hostEmail},
+		    #{answerContent},
+		    #{status},
+		    SYSDATE,
+		    NULL,
+		    NULL
+		)
+	</insert>
+	
+	<!-- 문의 답변 1개 조회 -->
+	<select id="AnswerSelect" parameterType="long" resultMap="answerResultMap">
+		SELECT SA.SPACE_ANSWER_ID SPACE_ANSWER_ID,
+		       SA.SPACE_QUESTION_ID SPACE_QUESTION_ID,
+		       NVL(SA.HOST_EMAIL, '') HOST_EMAIL,
+		       NVL(SA.ANSWER_CONTENT, '') ANSWER_CONTENT,
+		       NVL(SA.STATUS, '') STATUS,
+		       NVL(TO_CHAR(SA.REG_DATE, 'YYYY. MM. DD'), '') REG_DATE,
+		       NVL(TO_CHAR(SA.MODI_DATE, 'YYYY. MM. DD'), '') MODI_DATE,
+		       NVL(TO_CHAR(SA.DEL_DATE, 'YYYY. MM. DD'), '') DEL_DATE,
+		       NVL(H.HOST_NICKNAME, '') HOST_NICKNAME
+		  FROM SPACE_ANSWER SA, HOST H
+		 WHERE SA.HOST_EMAIL = H.HOST_EMAIL
+		   AND SPACE_ANSWER_ID = #{spaceAnswerId}
+	</select>
+	
+	<!-- 문의 답변 수정 -->
+	<update id="updateAnswer" parameterType="com.sist.web.model.SpaceAnswer">
+		UPDATE SPACE_ANSWER
+		   SET ANSWER_CONTENT = #{answerContent}
+		 WHERE SPACE_ANSWER_ID = #{spaceAnswerId}
+		   AND HOST_EMAIL = #{hostEmail}
+	</update>
+	
+	<!-- 문의 답변 삭제 -->
+	<update id="deleteAnswer" parameterType="com.sist.web.model.SpaceAnswer">
+		UPDATE SPACE_ANSWER
+		   SET STATUS = 'N'
+		 WHERE SPACE_ANSWER_ID = #{spaceAnswerId}
+	</update>
+</mapper>

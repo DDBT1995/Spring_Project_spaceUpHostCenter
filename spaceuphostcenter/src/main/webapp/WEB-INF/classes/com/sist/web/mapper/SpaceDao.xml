@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC " -//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.sist.web.dao.SpaceDao">
+	<resultMap type="com.sist.web.model.Space" id="spaceResultMap">
+		<id property="spaceId" column="SPACE_ID" />
+		<result property="hostEmail" column="HOST_EMAIL" />
+		<result property="spaceType" column="SPACE_TYPE" />
+		<result property="spaceName" column="SPACE_NAME" />
+		<result property="spaceDesc" column="SPACE_DESC" />
+		<result property="spaceTip" column="SPACE_TIP" />
+		<result property="spaceParking" column="SPACE_PARKING" />
+		<result property="spaceMaxCapacity" column="SPACE_MAX_CAPACITY" />
+		<result property="spaceAddr" column="SPACE_ADDR" />
+		<result property="spaceAddrDesc" column="SPACE_ADDR_DESC" />
+		<result property="spaceCloseDay" column="SPACE_CLOSE_DAY" />
+		<result property="spaceNotice" column="SPACE_NOTICE" />
+		<result property="spaceCloseDayHost" column="SPACE_CLOSE_DAY_HOST" />
+		<result property="spaceStartTime" column="SPACE_START_TIME" />
+		<result property="spaceEndTime" column="SPACE_END_TIME" />
+		<result property="minReservationTime" column="MIN_RESERVATION_TIME" />
+		<result property="spaceHourlyRate" column="SPACE_HOURLY_RATE" />
+		<result property="status" column="STATUS" />
+		<result property="regDate" column="REG_DATE" />
+		<result property="modiDate" column="MODI_DATE" />
+		<result property="delDate" column="DEL_DATE" />
+		<result property="spaceReadCnt" column="SPACE_READ_CNT" />
+	</resultMap>
+
+	<select id="spaceList" parameterType="com.sist.web.model.Space" resultMap="spaceResultMap">
+		SELECT
+		    SPACE_ID,
+		    HOST_EMAIL,
+		    SPACE_TYPE,
+		    SPACE_NAME,
+		    SPACE_DESC,
+		    SPACE_TIP,
+		    SPACE_PARKING,
+		    SPACE_MAX_CAPACITY,
+		    SPACE_ADDR,
+		    SPACE_ADDR_DESC,
+		    SPACE_CLOSE_DAY,
+		    SPACE_NOTICE,
+		    SPACE_CLOSE_DAY_HOST,
+		    SPACE_START_TIME,
+		    SPACE_END_TIME,
+		    MIN_RESERVATION_TIME,
+		    SPACE_HOURLY_RATE,
+		    STATUS,
+		    REG_DATE,
+		    MODI_DATE,
+		    DEL_DATE,
+		    SPACE_READ_CNT
+		FROM
+		    (SELECT
+		        ROWNUM AS RNUM,
+		        SPACE_ID,
+		        HOST_EMAIL,
+		        SPACE_TYPE,
+		        SPACE_NAME,
+		        SPACE_DESC,
+		        SPACE_TIP,
+		        SPACE_PARKING,
+		        SPACE_MAX_CAPACITY,
+		        SPACE_ADDR,
+		        SPACE_ADDR_DESC,
+		        SPACE_CLOSE_DAY,
+		        SPACE_NOTICE,
+		        SPACE_CLOSE_DAY_HOST,
+		        SPACE_START_TIME,
+		        SPACE_END_TIME,
+		        MIN_RESERVATION_TIME,
+		        SPACE_HOURLY_RATE,
+		        STATUS,
+		        REG_DATE,
+		        MODI_DATE,
+		        DEL_DATE,
+		        SPACE_READ_CNT
+		    FROM
+		        (SELECT
+		            NVL(SPACE_ID, 0) SPACE_ID,
+		            NVL(HOST_EMAIL, '') HOST_EMAIL,
+		            NVL(SPACE_TYPE, 0) SPACE_TYPE,
+		            NVL(SPACE_NAME, '') SPACE_NAME,
+		            NVL(SPACE_DESC, '') SPACE_DESC,
+		            NVL(SPACE_TIP, '') SPACE_TIP,
+		            NVL(SPACE_PARKING, '') SPACE_PARKING,
+		            NVL(SPACE_MAX_CAPACITY, 0) SPACE_MAX_CAPACITY,
+		            NVL(SPACE_ADDR, '') SPACE_ADDR,
+		            NVL(SPACE_ADDR_DESC, '') SPACE_ADDR_DESC,
+		            NVL(SPACE_CLOSE_DAY, 0) SPACE_CLOSE_DAY,
+		            NVL(SPACE_NOTICE, '') SPACE_NOTICE,
+		            NVL(SPACE_CLOSE_DAY_HOST, '') SPACE_CLOSE_DAY_HOST,
+		            NVL(SPACE_START_TIME, 0) SPACE_START_TIME,
+		            NVL(SPACE_END_TIME, 0) SPACE_END_TIME,
+		            NVL(MIN_RESERVATION_TIME, 0) MIN_RESERVATION_TIME,
+		            NVL(SPACE_HOURLY_RATE, 0) SPACE_HOURLY_RATE,
+		            NVL(STATUS, '') STATUS,
+		            NVL(TO_CHAR(REG_DATE, 'YYYY.MM.DD HH24:MI:SS'), '') REG_DATE,
+		            NVL(TO_CHAR(MODI_DATE,'YYYY.MM.DD HH24:MI:SS'), '') MODI_DATE,
+		            NVL(TO_CHAR(DEL_DATE, 'YYYY.MM.DD HH24:MI:SS'), '') DEL_DATE,
+		            NVL(SPACE_READ_CNT, 0) SPACE_READ_CNT
+		        FROM
+		            SPACE
+		        WHERE
+		            HOST_EMAIL = #{hostEmail}
+				AND 
+					<![CDATA[ STATUS <> 'N' ]]>
+		        ORDER BY
+		            SPACE_ID DESC
+		        )
+		    )
+		WHERE
+			RNUM <![CDATA[>=]]> #{startRow}
+		AND
+			RNUM <![CDATA[<=]]> #{endRow}
+	</select>
+
+	<select id="spaceTotalCnt" parameterType="String" resultType="int">
+		SELECT COUNT(SPACE_ID)
+		FROM SPACE
+		WHERE HOST_EMAIL = #{value}
+	</select>
+	
+	<insert id="insertSpace" parameterType="com.sist.web.model.Space">
+	    INSERT INTO space (
+	        space_id,
+	        host_email,
+	        space_type,
+	        space_name,
+	        space_desc,
+	        space_tip,
+	        space_parking,
+	        space_max_capacity,
+	        space_addr,
+	        space_addr_desc,
+	        space_close_day,
+	        space_notice,
+	        space_close_day_host,
+	        space_start_time,
+	        space_end_time,
+	        min_reservation_time,
+	        space_hourly_rate,
+	        status,
+	        reg_date,
+	        modi_date,
+	        del_date,
+	        space_read_cnt
+	    ) VALUES (
+	        SEQ_SPACE_ID.NEXTVAL,
+	        #{hostEmail},
+	        #{spaceType},
+	        #{spaceName},
+	        #{spaceDesc},
+	        #{spaceTip},
+	        #{spaceParking},
+	        #{spaceMaxCapacity},
+	        #{spaceAddr},
+	        #{spaceAddrDesc},
+	        #{spaceCloseDay},
+	        #{spaceNotice},
+	        #{spaceCloseDayHost},
+	        #{spaceStartTime},
+	        #{spaceEndTime},
+	        #{minReservationTime},
+	        #{spaceHourlyRate},
+	        #{status},
+	        SYSDATE,
+	        #{modiDate},
+	        #{delDate},
+	        #{spaceReadCnt}
+	    )
+ 	</insert>
+ 	
+ 	
+ 	<select id="getInsertedSpaceId" resultType="long">
+	    SELECT SEQ_SPACE_ID.CURRVAL FROM DUAL
+	</select>
+	
+	<update id="spaceStatusUpdate" parameterType="com.sist.web.model.Space">
+		UPDATE SPACE
+		SET STATUS = #{status}, MODI_DATE = SYSDATE
+		WHERE SPACE_ID = #{spaceId}
+	</update>
+	
+	<select id="spaceSelectBySpaceIdHostEmail"  parameterType="com.sist.web.model.Space" resultMap="spaceResultMap">
+		SELECT
+		    NVL(SPACE_ID, 0) SPACE_ID,
+		    NVL(HOST_EMAIL, '') HOST_EMAIL,
+		    NVL(SPACE_TYPE, 0) SPACE_TYPE,
+		    NVL(SPACE_NAME, '') SPACE_NAME,
+		    NVL(SPACE_DESC, '') SPACE_DESC,
+		    NVL(SPACE_TIP, '') SPACE_TIP,
+		    NVL(SPACE_PARKING, '') SPACE_PARKING,
+		    NVL(SPACE_MAX_CAPACITY, 0) SPACE_MAX_CAPACITY,
+		    NVL(SPACE_ADDR, '') SPACE_ADDR,
+		    NVL(SPACE_ADDR_DESC, '') SPACE_ADDR_DESC,
+		    NVL(SPACE_CLOSE_DAY, 0) SPACE_CLOSE_DAY,
+		    NVL(SPACE_NOTICE, '') SPACE_NOTICE,
+		    NVL(SPACE_CLOSE_DAY_HOST, '') SPACE_CLOSE_DAY_HOST,
+		    NVL(SPACE_START_TIME, 0) SPACE_START_TIME,
+		    NVL(SPACE_END_TIME, 0) SPACE_END_TIME,
+		    NVL(MIN_RESERVATION_TIME, 0) MIN_RESERVATION_TIME,
+		    NVL(SPACE_HOURLY_RATE, 0) SPACE_HOURLY_RATE,
+		    NVL(STATUS, '') STATUS,
+		    NVL(TO_CHAR(REG_DATE, 'YYYY.MM.DD HH24:MI:SS'), '') REG_DATE,
+		    NVL(TO_CHAR(MODI_DATE,'YYYY.MM.DD HH24:MI:SS'), '') MODI_DATE,
+		    NVL(TO_CHAR(DEL_DATE, 'YYYY.MM.DD HH24:MI:SS'), '') DEL_DATE,
+		    NVL(SPACE_READ_CNT, 0) SPACE_READ_CNT
+		FROM
+		    SPACE
+		WHERE
+		    SPACE_ID = #{spaceId}
+		AND
+			HOST_EMAIL = #{hostEmail}
+	</select>
+	
+	<update id="spaceUpdate" parameterType="com.sist.web.model.Space">
+		UPDATE space
+		   SET 
+		       host_email = #{hostEmail},
+		       space_type = #{spaceType},
+		       space_name = #{spaceName},
+		       space_desc = #{spaceDesc},
+		       space_tip = #{spaceTip},
+		       space_parking = #{spaceParking},
+		       space_max_capacity = #{spaceMaxCapacity},
+		       space_addr = #{spaceAddr},
+		       space_addr_desc = #{spaceAddrDesc},
+		       space_close_day = #{spaceCloseDay},
+		       space_notice = #{spaceNotice},
+		       space_close_day_host = #{spaceCloseDayHost},
+		       space_start_time = #{spaceStartTime},
+		       space_end_time = #{spaceEndTime},
+		       min_reservation_time = #{minReservationTime},
+		       space_hourly_rate = #{spaceHourlyRate},
+		       status = #{status},
+		       reg_date = SYSDATE,
+		       modi_date = #{modiDate},
+		       del_date = #{delDate},
+		       space_read_cnt = #{spaceReadCnt}
+		 WHERE 
+		       space_id = #{spaceId}
+	</update>
+ 	
+</mapper>

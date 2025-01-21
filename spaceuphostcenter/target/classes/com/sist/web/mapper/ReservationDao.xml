@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sist.web.dao.ReservationDao">
+	<resultMap type="com.sist.web.model.Reservation" id="reservationResultMap">
+		<id property="reservationId" column="RESERVATION_ID" />
+	    <result property="spaceId" column="SPACE_ID" />
+	    <result property="guestEmail" column="GUEST_EMAIL" />
+	    <result property="useDate" column="USE_DATE" />
+	    <result property="useStartTime" column="USE_START_TIME" />
+	    <result property="useEndTime" column="USE_END_TIME" />
+	    <result property="usePeople" column="USE_PEOPLE" />
+	    <result property="usePurpose" column="USE_PURPOSE" />
+	    <result property="status" column="STATUS" />
+	    <result property="regDate" column="REG_DATE" />
+	    <result property="delDate" column="DEL_DATE" />
+	    <result property="paymentId" column="PAYMENT_ID" />
+	</resultMap>
+	
+	<select id="reservationList" parameterType="com.sist.web.model.Reservation" resultMap="reservationResultMap">
+		SELECT RESERVATION_ID
+			 , SPACE_ID
+			 , GUEST_EMAIL
+			 , USE_DATE
+			 , USE_START_TIME
+			 , USE_END_TIME
+			 , USE_PEOPLE
+			 , USE_PURPOSE
+			 , STATUS
+			 , REG_DATE
+			 , DEL_DATE
+			 , PAYMENT_ID
+		  FROM (SELECT ROWNUM RNUM
+					 , RESERVATION_ID
+					 , SPACE_ID
+					 , GUEST_EMAIL
+					 , USE_DATE
+					 , USE_START_TIME
+					 , USE_END_TIME
+					 , USE_PEOPLE
+					 , USE_PURPOSE
+					 , STATUS
+					 , REG_DATE
+					 , DEL_DATE
+					 , PAYMENT_ID
+				  FROM (SELECT RE.RESERVATION_ID
+							 , RE.SPACE_ID
+							 , GUEST_EMAIL
+							 , USE_DATE
+							 , USE_START_TIME
+							 , USE_END_TIME
+							 , USE_PEOPLE
+							 , USE_PURPOSE
+							 , RE.STATUS
+							 , TO_CHAR(RE.REG_DATE, 'YYYY-MM-DD') REG_DATE
+							 , TO_CHAR(RE.DEL_DATE, 'YYYY-MM-DD') DEL_DATE
+							 , P.PAYMENT_ID
+						  FROM RESERVATION RE, SPACE S, PAYMENT P
+						 WHERE HOST_EMAIL = #{hostEmail}
+						 <if test='status != null and status != ""'>
+						   AND RE.STATUS = #{status}
+						 </if>
+						 <if test='searchKeyword != null and searchKeyword != ""'>
+						   AND (RE.RESERVATION_ID LIKE '%' || #{searchKeyword} || '%'
+						    OR RE.GUEST_EMAIL LIKE '%' || #{searchKeyword} || '%')
+						 </if>
+						   AND RE.SPACE_ID = S.SPACE_ID
+						   AND RE.RESERVATION_ID = P.RESERVATION_ID(+)
+						 <if test='sortReservation != null and sortReservation != ""'>
+							<choose>
+								<when test='sortReservation == "1"'>
+									   ORDER BY USE_DATE DESC
+								</when>
+								<when test='sortReservation == "2"'>
+									   ORDER BY USE_DATE ASC
+								</when>
+								<when test='sortReservation == "3"'>
+									   ORDER BY REG_DATE DESC
+								</when>
+								<when test='sortReservation == "4"'>
+									   ORDER BY REG_DATE ASC
+								</when>
+							</choose>
+						</if>))
+		 WHERE RNUM <![CDATA[>=]]> #{startRow}
+		   AND RNUM <![CDATA[<=]]> #{endRow}
+	</select>
+	
+	<select id="reservationTotalCount" parameterType="com.sist.web.model.Reservation" resultType="long">
+		SELECT COUNT(RESERVATION_ID)
+		  FROM RESERVATION RE, SPACE S
+		 WHERE HOST_EMAIL = #{hostEmail}
+		 <if test='status != null and status != ""'>
+		   AND RE.STATUS = #{status}
+		 </if>
+		 <if test='searchKeyword != null and searchKeyword != ""'>
+		   AND (RE.RESERVATION_ID LIKE '%' || #{searchKeyword} || '%'
+		    OR RE.GUEST_EMAIL LIKE '%' || #{searchKeyword} || '%')
+		 </if>
+		   AND RE.SPACE_ID = S.SPACE_ID
+	</select>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,764 @@
+body {
+	font-family: Arial, sans-serif;
+	background-color: #ffffff;
+	margin: 0;
+}
+
+.container {
+	padding: 10px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	text-align: center;
+	align-items: center;
+}
+
+/* 마이페이지 */
+.profile-container {
+	display: flex;
+	align-items: flex-start;
+	justify-content: center;
+	width: 100%; /* Ensure it takes full width */
+	margin-top: 150px;
+	gap: 0 5%;
+}
+
+.avatar {
+    width: 120px;
+    height: 120px;
+    border: 1px solid #B8EADE;
+    background-color: #fff;
+    border-radius: 50%;
+    overflow: hidden;
+    margin: 0 auto;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    background-color: #B8EADE;
+}
+
+.email {
+	font-size: 15px;
+	color: #a0a0a0;
+}
+
+.edit-profile {
+	background-color: #3395E5;
+	color: white;
+	border: none;
+	border-radius: 5px;
+	padding: 10px 20px;
+	cursor: pointer;
+}
+
+.edit-profile:hover {
+	background-color: #2c997e;
+}
+
+.upload-message {
+	margin: 20px 0;
+}
+
+.points-coupons {
+	display: flex;
+	justify-content: space-between;
+	margin-top: 20px;
+	margin-bottom: 30px;
+}
+
+.menu {
+	width: 160px;
+	font-family: Arial, sans-serif;
+	background-color: #f9f9f9;
+	padding: 20px;
+	border: 1px solid #ddd;
+	border-radius: 5px;
+	text-align: left;
+}
+
+.menu h3 {
+	font-size: 18px;
+	margin-bottom: 10px;
+	color: #333;
+}
+
+.sideMenu {
+	margin-top: 30px;
+	margin-bottom: 30px;
+}
+
+.menu ul {
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+}
+
+.menu ul li {
+	margin: 5px 0;
+}
+
+.menu hr {
+	border: 1px solid #ddd; /* 가로 구분선 */
+	margin: 5px 0 25px; /* 여백 조정 */
+	opacity: 0.5;
+}
+
+.menu a {
+	text-decoration: none;
+	color: #555;
+	padding: 8px 12px;
+	display: block;
+	border-radius: 4px;
+}
+
+.menu a:hover {
+	color: #3395E5;
+}
+
+.prev, .next {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	text-decoration: none;
+}
+
+.prev:hover, .next:hover {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	text-decoration: none;
+}
+
+.prev img {
+	width: 20px;
+	height: 20px;
+}
+
+.next img {
+	width: 20px;
+	height: 20px;
+}
+
+.btn {
+	width: 30px;
+	height: 30px;
+	line-height: 30px; /* 텍스트를 가운데 정렬 */
+	text-align: center;
+	border-radius: 50%; /* 둥근 모양 */
+	font-size: 15px;
+	background-color: #f0f0f0;
+	color: #333;
+	cursor: pointer;
+	transition: all 0.3s ease; /* 부드러운 애니메이션 */
+	text-decoration: none;
+}
+
+.btn.active {
+	background-color: #3395E5; /* 활성화된 상태의 파란색 배경 */
+	color: white;
+	font-size: 17px; /* 크기 살짝 키우기 */
+	width: 40px;
+	height: 40px;
+	line-height: 40px;
+	text-decoration: none;
+}
+
+.btn:hover {
+	background-color: #71D3BB;
+	text-decoration: none;
+}
+
+.badge {
+	background-color: #f44336; /* 배지 색 */
+	color: white;
+	border-radius: 50%;
+	padding: 2px 6px;
+	font-size: 12px;
+}
+
+.reserv-container {
+	background-color: white;
+	padding: 20px;
+	width: 50%;
+}
+
+h1 {
+	margin: 0 0 50px;
+	font-size: 24px;
+	font-weight: 700;
+	color: rgb(27, 29, 31);
+	letter-spacing: -.3px;
+}
+
+.search-bar {
+	display: flex;
+	padding: 17px 21px 15px 30px;
+	margin-bottom: 20px;
+	border-radius: 10px;
+	background-color: rgb(243, 245, 247);
+	align-items: center;
+}
+
+.search-bar input {
+	flex: 1;
+	border: 0;
+	outline: none;
+	float: left;
+	background-color: transparent;
+	font-size: 15px;
+}
+
+.search-bar button {
+	height: 100%;
+	border: 0;
+	background-color: rgb(243, 245, 247);
+	color: white;
+	border-radius: 10px;
+	outline: none;
+	float: left;
+	cursor: pointer;
+}
+
+.hidden {
+	display: none;
+}
+
+.space-list {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 30px;
+	position: relative;
+	margin-top: 60px;
+}
+
+.space-card {
+	border-radius: 8px;
+	background-color: rgb(243, 245, 247);
+	width: 30%; /* 카드 너비 설정 */
+	overflow: hidden; /* 자식 요소가 카드 크기를 넘지 않도록 설정 */
+}
+
+.status {
+	background-color: #3395E5; /* 상태 색상 */
+	color: white;
+	padding: 5px;
+	text-align: center;
+	position: absolute;
+}
+
+.status.P {
+	background-color: #3395E5;
+} /* 진행중 */
+.status.C {
+	background-color: #B4B5B9;
+} /* 완료 */
+.status.D {
+	background-color: #E75073;
+} /* 취소 */
+
+/* 좋아요 */
+.likey-status {
+    background-color: transparent; /* 상태 색상 */
+    border: none;
+    padding: 5px;
+    text-align: center;
+    position: absolute;
+}
+
+.likey-status img {
+    cursor: pointer;
+}
+
+.scale-up-center {
+   -webkit-animation: scale-up-center 0.7s cubic-bezier(0.680, -0.550, 0.265, 1.550) both;
+           animation: scale-up-center 0.7s cubic-bezier(0.680, -0.550, 0.265, 1.550) both;
+}
+
+@-webkit-keyframes scale-up-center {
+  0% {
+    -webkit-transform: scale(0.1);
+            transform: scale(0.1);
+  }
+  100% {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  }
+}
+@keyframes scale-up-center {
+  0% {
+    -webkit-transform: scale(0.1);
+            transform: scale(0.1);
+  }
+  100% {
+    -webkit-transform: scale(1);
+            transform: scale(1);
+  }
+}
+
+.likey-count {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	color: rgb(138, 138, 138);
+	font-size: 13px;
+}
+
+.space-card img {
+	width: 100%; /* 카드 너비에 맞추기 */
+	height: 215px; /* 고정된 높이 */
+	object-fit: cover; /* 비율 유지하며 잘림 */
+}
+
+.space-info img {
+	width: 15px;
+}
+
+.space-title {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: space-between;
+}
+
+.details {
+	margin: 10px 0;
+}
+
+.details span {
+	margin-right: 10px;
+}
+
+.button-group {
+	display: flex;
+	justify-content: center; /* 버튼을 중앙에 정렬 */
+	margin-top: auto; /* 위의 공간을 자동으로 채워 버튼을 아래로 밀어냄 */
+	width: 100%; /* button-group이 space-card의 너비를 꽉 채우도록 설정 */
+}
+
+.button-group button {
+	flex: 1; /* 버튼이 동일한 너비를 가지도록 설정 */
+	padding: 5px 10px;
+	border: none;
+	cursor: pointer;
+}
+
+.button-group button:nth-child(1) {
+	background-color: #3395E5;
+	color: white;
+	height: 40px;
+	font-size: 15px;
+}
+
+.space-card hr {
+	opacity: 0.5;
+}
+
+.space-info {
+	padding-left: 15px;
+	padding-right: 15px;
+	flex-grow: 1;
+}
+
+#spaceName {
+	/* 여러 줄 자르기 추가 스타일 */
+	white-space: normal;
+	line-height: 1.2;
+	height: 3.6em;
+	text-align: left;
+	word-wrap: break-word;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+}
+
+.pagination {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 10px; /* 버튼 간 간격 */
+	margin-top: 70px; /* 상단 여백 */
+}
+/* 구 버튼
+.pagination button {
+    padding: 10px 15px;
+    border: none;
+    background-color: #ffffff; /* 버튼 색상 */
+color
+:
+ 
+rgb
+(
+173
+,
+173
+,
+173
+)
+;
+
+    
+cursor
+:
+ 
+pointer
+;
+
+    
+margin
+:
+ 
+0
+ 
+5px
+; /* 버튼 간격 */
+
+
+}
+.pagination span {
+	align-self: center; /* 세로 중앙 정렬 */
+	margin: 0 10px; /* 여백 */
+}
+
+* /
+	/* 마이페이지 끝 */
+	/* 비밀번호 체크 */ 
+.pwdConfirm-container {
+	background-color: white;
+	padding: 20px;
+	width: 50%;
+}
+
+.confirm-container {
+	background-color: white;
+	border: 1px solid;
+	border-color: rgb(223, 226, 231);
+	padding: 40px 50px;
+	width: 80%; /* 너비 설정 */
+	text-align: center;
+}
+
+.form-group {
+	margin-bottom: 20px; /* 입력 필드와 버튼 간의 여백 설정 */
+	text-align: left; /* 레이블을 왼쪽 정렬 */
+	width: 100%; /* form-group 너비 설정 */
+}
+
+/*
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 14px;
+    font-weight: 700;
+    color: rgb(158, 164, 170);
+}
+*/
+.password-input {
+	display: flex;
+	flex-direction: row;
+	width: 100%; /* 비밀번호 입력 필드 너비 설정 */
+	margin-top: 8px;
+}
+
+input[type="password"] {
+	max-width: 550px;
+	width: 100%; /* 입력 필드 너비를 form-group에 맞춤 */
+	padding: 14px;
+	border: 1px solid #ddd;
+	border-radius: 8px;
+	font-size: 14px;
+}
+
+input[type="password"]:focus {
+	outline: 0.5px solid rgb(27, 29, 31);
+}
+
+.confirm-button {
+	background-color: #3395E5; /* 버튼 색상 */
+	color: white;
+	border: none;
+	border-radius: 8px;
+	padding: 10px;
+	cursor: pointer;
+	font-size: 18px;
+	font-weight: 700;
+	width: 23.5%;
+	margin-left: 7px;
+}
+
+/* 비밀번호 확인 안내 문구 */
+.info-section {
+	text-align: center;
+	color: #a0a0a0; /* 연한 회색 */
+	font-size: 14px;
+	line-height: 1.5;
+	margin-bottom: 10px;
+	margin-top: 30px;
+}
+
+.info-section strong {
+	font-weight: bold;
+}
+
+.divider {
+	width: 100%;
+	height: 1px;
+	background-color: #ddd; /* 구분선 */
+	margin: 20px 0;
+}
+
+.notice2 {
+	text-align: center;
+	font-size: 16px;
+	color: #555;
+	line-height: 1.5;
+	margin-top: 85px;
+	margin-bottom: 47px;
+}
+
+
+/* 회원수정폼 */
+.update-container {
+	width: 700px;
+}
+
+.updateForm-group {
+	font-size: 15px;
+	margin-bottom: 15px;
+	text-align: left;
+}
+
+.updateForm-group label {
+	display: block;
+	margin-bottom: 5px;
+	font-size: 13px;
+	font-weight: bold;
+	color: #9ea4aa;
+}
+
+.updateForm-group input[type="email"], .updateForm-group input[type="password"], .updateForm-group input[type="text"] {
+	width: 100%;
+	max-width: 670px;
+	padding: 15px;
+	border: 1px solid rgb(223, 226, 231);
+	border-radius: 8px;
+}
+
+.profile-picture {
+	text-align: center;
+	margin-bottom: 30px;
+	position: relative;
+	display: inline-block;
+}
+
+.profile-picture img {
+	width: 120px;
+	height: 120px;
+	border-radius: 50%;
+	border: 1px solid #ddd;
+	object-fit: cover;
+	cursor: pointer;
+}
+
+.profile-picture .icon {
+	position: absolute;
+	bottom: 0;
+	right: 0;
+	width: 40px; /* 아이콘 크기 증가 */
+	height: 40px;
+	border-radius: 50%;
+	cursor: pointer;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.profile-picture .icon img {
+	width: 30px; /* SVG 내부 크기 증가 */
+	height: 30px;
+	border: none;
+}
+/* Hidden file input */
+#fileInput {
+	display: none;
+}
+
+.buttons {
+	margin-top: 70px;
+	text-align: center;
+}
+
+.btndel {
+	text-align: right; /* 버튼을 오른쪽으로 정렬 */
+	max-width: 670px; /* .updateForm-group과 동일한 길이 */
+	margin: 0 auto 0; /* 위쪽에 간격 추가, 중앙 정렬 */
+}
+
+#btnDel {
+	background: rgb(223, 226, 231);
+	color: #000;
+	padding: 3px 13px 5px;
+	border: none;
+	border-radius: 50px;
+	cursor: pointer;
+}
+
+#btnModi {
+	width: 120px;
+	font-size: 17px;
+	padding: 12px;
+	background: #3395E5;
+	color: #fff;
+	border: none;
+	border-radius: 8px;
+	cursor: pointer;
+	max-width: 200px;
+	width: 100%;
+}
+
+#btnModi:hover {
+	background: #2aa382;
+}
+
+.updateForm-group2 {
+	font-size: 15px;
+	margin-bottom: 15px;
+	text-align: left;
+}
+
+.updateForm-group2 label {
+	margin-bottom: 5px;
+	font-size: 13px;
+	font-weight: bold;
+	color: #9ea4aa;
+}
+
+.updateForm-group2 input[type="text"] {
+	width: 100%;
+	max-width: 580px;
+	padding: 15px;
+	border: 1px solid rgb(223, 226, 231);
+	border-radius: 8px;
+}
+
+#guestEmail {
+	pointer-events: none;
+	background-color: #FAFAFA;
+}
+
+#nickCheck {
+	width: 84px;
+	height: 45px;
+	padding: 5px;
+	font-size: 15px;
+	color: #fff;
+	background-color: #3395E5;
+	border: none;
+	border-radius: 8px;
+	cursor: pointer;
+}
+
+.confirm-container2 {
+	background-color: white;
+	border: 1px solid;
+	border-color: rgb(223, 226, 231);
+	padding: 40px 50px;
+	width: 80%; /* 너비 설정 */
+	text-align: center;
+	margin-top: 150px;
+}
+
+#btnDelete {
+	width: 80px;
+	height: 45px;
+	padding: 5px;
+	font-size: 15px;
+	font-weight: 500;
+	color: #000;
+	background-color: #eee;
+	border: none;
+	border-radius: 8px;
+	cursor: pointer;
+}
+
+/* 예약내역 탭 */
+.tabs {
+	display: flex;
+	margin-bottom: 30px;
+}
+
+.tab {
+	flex: 1;
+	text-align: center;
+	padding: 10px 0;
+	cursor: pointer;
+	position: relative;
+	color: #333;
+	transition: color 0.3s ease, background-color 0.3s ease;
+}
+
+/* 전체 */
+.tabs .tab.all.active {
+	color: #3395E5;
+}
+
+.tabs .tab.all.active::after {
+	content: "";
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	height: 4px;
+	background-color: #3395E5; /* 초록색 밑줄 */
+}
+
+/* 진행 */
+.tabs .tab.progress.active {
+	color: #3395E5;
+}
+
+.tabs .tab.progress.active::after {
+	content: "";
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	height: 4px;
+	background-color: #36BC9B; /* 주황색 밑줄 */
+}
+
+/* 완료 */
+.tabs .tab.completed.active {
+	color: #808080;
+}
+
+.tabs .tab.completed.active::after {
+	content: "";
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	height: 4px;
+	background-color: #808080; /* 회색 밑줄 */
+}
+
+/* 취소 */
+.tabs .tab.cancelled.active {
+	color: #E75073;
+}
+
+.tabs .tab.cancelled.active::after {
+	content: "";
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	right: 0;
+	height: 4px;
+	background-color: #E75073; /* 빨간색 밑줄 */
+}

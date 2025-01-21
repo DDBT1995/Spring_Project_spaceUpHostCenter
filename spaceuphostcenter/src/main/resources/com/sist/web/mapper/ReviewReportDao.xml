@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sist.web.dao.ReviewReportDao">
+	<!-- 신고 등록 -->
+	<insert id="insertReport" parameterType="com.sist.web.model.ReviewReport">
+		<!-- SEQ 선행 처리기 -->
+		<selectKey resultType="long" keyProperty="reviewReportId" order="BEFORE">
+			SELECT SEQ_REVIEW_REPORT_ID.NEXTVAL FROM DUAL
+		</selectKey>
+		
+		INSERT INTO REVIEW_REPORT (
+		    REVIEW_REPORT_ID,
+		    REVIEW_ID,
+		    REPORTER_ID,
+		    REPORTER_TYPE,
+		    REPORT_REASON,
+		    REPORT_DATE,
+		    STATUS
+		) VALUES (
+		    #{reviewReportId},
+		    #{reviewId},
+		    #{reporterId},
+		    #{reporterType},
+		    #{reportReason},
+		    SYSDATE,
+		    'Y'
+		)
+	</insert>
+</mapper>

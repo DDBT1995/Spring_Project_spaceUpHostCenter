@@ -1,0 +1,96 @@
+
+.fcontainer {
+	padding-left: 0px !important;
+	padding-right: 0px !important;
+	display: flex;
+	flex-direction: row;
+	max-width: 1200px;
+	min-width: 1200px;
+    margin: 50px auto 50px;
+	margin-bottom: 50px;
+}
+
+.fmenu, .fbusiness-info {
+	padding-top: 20px;
+	width: 50%;
+}
+
+.fmenu p {
+	font-weight: 700;
+	font-size: 12px;
+	line-height: 14px;
+	margin-top: 12px;
+	cursor: pointer;
+}
+
+.fmenu .femail {
+	font-size: 15px;
+	line-height: 22px;
+	margin-top: 50px;
+}
+
+.fbusiness-info .title {
+	font-weight: 500;
+	font-size: 15px;
+	margin: 0;
+	color: #9EA4AA;
+}
+
+.fbusiness-info .fdetails {
+	margin-top: 16px;
+	font-weight: 400;
+	font-size: 12px;
+	line-height: 20px;
+	color: #9EA4AA;
+}
+
+.fbusiness-info .footer2 {
+	font-weight: 500;
+	font-size: 13px;
+	line-height: 15px;
+	margin-top: 50px;
+}
+
+.ficonBox_row {
+	margin-top: 50px;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.ficonBox_column {
+	width: 32px;
+	height: 32px;
+	cursor: pointer;
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	margin-left: 10px;
+}
+
+.ficonBox {
+	position: relative;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	margin-top: 2px;
+	width: 32px;
+	height: 32px;
+	border-radius: 16px;
+	background-color: #eff3f5;
+}
+
+.ficonBox img {
+	vertical-align: top;
+	width: 20px;
+	height: 20px;
+	cursor: pointer;
+}
+
+.footer {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}

@@ -1,0 +1,196 @@
+body {
+    font-family: "Noto Sans KR", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+}
+h3 {
+    text-align: left;
+    font-weight: bold;
+}
+.titles {
+    background: inherit;
+    padding: 20px;            
+    margin-top: 30px;
+    max-width: 700px;
+    width: 100%;
+}
+.buttons {
+    background: inherit;
+    padding: 20px;            
+    margin-top: 30px;            
+    margin-bottom: 50px;
+    max-width: 700px;
+    width: 100%;
+    text-align: center;
+}
+.container {
+    background: inherit;
+    padding: 40px;
+    border: 1px solid;
+    border-color: rgb(223 226 231);
+    border-radius: 10px;
+    max-width: 700px;
+    width: 100%;
+}
+.form-group {
+    font-size: 15px;
+    margin-bottom: 15px;
+}
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 13px;
+    font-weight: bold;
+    color: #9ea4aa;
+}
+.form-group input[type="email"],
+.form-group input[type="password"],
+.form-group input[type="text"] {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid rgb(223 226 231);
+    border-radius: 8px;
+}
+.form-group input[type="checkbox"] {
+    margin-right: 10px;
+    margin-bottom: 13px;
+}
+.form-group .sub-label {
+    margin-left: 25px;
+    color: #6c757d;
+    line-height: 2;
+}
+.form-group .optional {
+    font-size: 0.9em;
+    color: #6c757d;
+}
+.btnReg {
+    font-size: 20px;
+    font-weight: bold;
+    padding: 12px;
+    background: #3395E5;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    max-width: 300px;
+    width: 100%;
+}
+.btnReg:hover {
+    background: #3395E5;
+    max-width: 300px;
+    width: 100%;
+}
+#term {
+    font-size: 17px;
+    color: #6c757d;
+    line-height: 2;
+    white-space: pre-line;
+}
+
+/* 기존 체크박스를 숨기기 위한 코드 */
+.custom-input {
+display: none;
+}
+/* 커스텀 체크박스를 위한 코드 */
+.custom-label .custom-label-checked {
+display: none;
+}
+.custom-input:checked + .custom-label .custom-label-checked {
+display: inline-block;
+}
+.custom-input:checked + .custom-label .custom-label-unchecked {
+display: none;
+}
+
+/*약관 스크롤바*/
+.content-box {
+    background-color: inherit;
+    border: 1px solid #cccccc;
+    padding: 10px;
+    margin: 10px;
+    margin-bottom: 25px;
+    max-width: 600px;
+    width: 100%;
+    border-radius: 5px;
+    height: 120px;
+}
+.text {
+    color: #333333;
+    font-size: 14px;
+    padding: 10px;
+    line-height: 1.6;
+    height: 90px;
+    overflow-y: scroll;
+    white-space : pre-line;
+    font-weight: 400;
+}
+.highlight {
+    color: #3395E5;
+}
+.text::-webkit-scrollbar {
+    width: 13px;
+}
+.text::-webkit-scrollbar-track { 
+    background-color: #dbecfa;
+}
+.text::-webkit-scrollbar-thumb { 
+    background-color: #70B5ED;
+}
+.text::-webkit-scrollbar-button {
+    display: none;
+}
+.text::-webkit-scrollbar-track,
+.text::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+}
+
+/* 이메일 인증 */
+#emailAuthDiv {
+	display: none;
+	align-items: center;
+	justify-content: space-between;
+	margin-top: 10px;
+}
+
+#btnCheckAuthCode {
+    width: 18%;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 12px;
+    background: rgb(54 132 188 / 80%);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    height: 54.5px;
+}
+
+.btnSendAuthCode {
+    width: 18%;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 12px;
+    background: lightgray;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    height: 54.5px;
+}
+
+#btnResendAuthCode {
+    width: 49%;
+    font-size: 16px;
+    font-weight: bold;
+    padding: 12px;
+    background: rgb(255 72 72 / 93%);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    height: 54.5px;
+}

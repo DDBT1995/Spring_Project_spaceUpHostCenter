@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sist.web.dao.SpaceQuestionDao">
+	<!-- 문의 조회 resultMap -->
+	<resultMap type="com.sist.web.model.SpaceQuestion" id="questionResultMap">
+		<id column="SPACE_QUESTION_ID" property="spaceQuestionId" />
+		<result column="GUEST_EMAIL" property="guestEmail" />
+		<result column="SPACE_ID" property="spaceId" />
+		<result column="QUESTION_CONTENT" property="questionContent" />
+		<result column="QUESTION_CATEGORY" property="questionCategory" />
+		<result column="STATUS" property="status" />
+		<result column="REG_DATE" property="regDate" />
+		<result column="MODI_DATE" property="modiDate" />
+		<result column="DEL_DATE" property="delDate" />
+		<result column="SPACE_NAME" property="spaceName" />
+		<result column="SPACE_ADDR" property="spaceAddr" />
+		<result column="GUEST_NICKNAME" property="guestNickname" />
+		<result column="HOST_EMAIL" property="hostEmail" />
+	</resultMap>
+
+	<!-- 호스트가 올린 공간에 대한 문의 조회 -->
+	<select id="questionSelect" parameterType="com.sist.web.model.SpaceQuestion" resultMap="questionResultMap">
+		SELECT SPACE_QUESTION_ID,
+		       GUEST_EMAIL,
+		       SPACE_ID,
+		       QUESTION_CONTENT,
+		       QUESTION_CATEGORY,
+		       STATUS,
+		       REG_DATE,
+		       MODI_DATE,
+		       DEL_DATE,
+		       SPACE_NAME,
+		       SPACE_ADDR,
+		       GUEST_NICKNAME
+		  FROM (SELECT ROWNUM AS RNUM,
+		               SPACE_QUESTION_ID,
+		               GUEST_EMAIL,
+		               SPACE_ID,
+		               QUESTION_CONTENT,
+		               QUESTION_CATEGORY,
+		               STATUS,
+		               REG_DATE,
+		               MODI_DATE,
+		               DEL_DATE,
+		               SPACE_NAME,
+		               SPACE_ADDR,
+		               GUEST_NICKNAME
+		          FROM (SELECT SQ.SPACE_QUESTION_ID SPACE_QUESTION_ID,
+		                       NVL(SQ.GUEST_EMAIL, '') GUEST_EMAIL,
+		                       NVL(SQ.SPACE_ID, 0) SPACE_ID,
+		                       NVL(SQ.QUESTION_CONTENT, '') QUESTION_CONTENT,
+		                       NVL(SQ.QUESTION_CATEGORY, 3) QUESTION_CATEGORY,
+		                       NVL(SQ.STATUS, '') STATUS,
+		                       NVL(TO_CHAR(SQ.REG_DATE, 'YYYY. MM. DD'), '') REG_DATE,
+		                       NVL(TO_CHAR(SQ.MODI_DATE, 'YYYY. MM. DD'), '') MODI_DATE,
+		                       NVL(TO_CHAR(SQ.DEL_DATE, 'YYYY. MM. DD'), '') DEL_DATE,
+		                       NVL(SP.SPACE_NAME, '') SPACE_NAME,
+		                       NVL(SP.SPACE_ADDR, '') SPACE_ADDR,
+		                       NVL(GUEST_NICKNAME, '') GUEST_NICKNAME
+		                  FROM SPACE_QUESTION SQ
+		                  JOIN SPACE SP ON SQ.SPACE_ID = SP.SPACE_ID
+		                  JOIN GUEST GS ON SQ.GUEST_EMAIL = GS.GUEST_EMAIL
+		                  LEFT JOIN SPACE_ANSWER SA ON SQ.SPACE_QUESTION_ID = SA.SPACE_QUESTION_ID
+		                 WHERE SQ.SPACE_ID IN (SELECT SPACE_ID
+		                                         FROM SPACE
+		                                        WHERE HOST_EMAIL = #{hostEmail})
+		                                       
+		           <if test='searchValue != null and searchValue != ""'>		            	
+	                       AND SP.SPACE_ID = #{searchValue}
+	               </if>
+	               
+	               <!-- 1.답변 미작성 2.답변 완료 --> 
+       			   <if test='qnaSorting == "1"'>
+					       AND SQ.SPACE_QUESTION_ID NOT IN (SELECT SPACE_QUESTION_ID
+						                                      FROM SPACE_ANSWER
+						                                     WHERE HOST_EMAIL = #{hostEmail})
+                   </if>
+                   <if test='qnaSorting == "2"'>
+					       AND SQ.SPACE_QUESTION_ID IN (SELECT SPACE_QUESTION_ID
+						                                  FROM SPACE_ANSWER
+						                                 WHERE HOST_EMAIL = #{hostEmail})
+                   </if>
+		                 
+		                 ORDER BY REG_DATE DESC))		                 
+		 WHERE RNUM <![CDATA[>=]]> #{startRow}
+		   AND RNUM <![CDATA[<=]]> #{endRow}
+	</select>
+	
+	<!-- 문의 총 갯수 -->
+	<select id="questionCount" parameterType="com.sist.web.model.SpaceQuestion" resultType="long">
+		SELECT COUNT(SQ.SPACE_QUESTION_ID) AS CNT
+		  FROM SPACE_QUESTION SQ
+		  JOIN SPACE SP ON SQ.SPACE_ID = SP.SPACE_ID
+		  JOIN GUEST GS ON SQ.GUEST_EMAIL = GS.GUEST_EMAIL
+		  LEFT JOIN SPACE_ANSWER SA ON SQ.SPACE_QUESTION_ID = SA.SPACE_QUESTION_ID
+		 WHERE SP.SPACE_ID IN (SELECT SPACE_ID
+		                         FROM SPACE
+		                        WHERE HOST_EMAIL = #{hostEmail})
+		                        
+		<if test='searchValue != null and searchValue != ""'>		            	
+           AND SP.SPACE_ID = #{searchValue}
+		</if>
+		
+		<!-- 1.답변 미작성 2.답변 완료 --> 
+	  	<if test='qnaSorting == "1"'>
+	       AND SQ.SPACE_QUESTION_ID NOT IN (SELECT SPACE_ANSWER_ID
+		                                      FROM SPACE_ANSWER
+		                                     WHERE HOST_EMAIL = #{hostEmail})
+	    </if>
+	    <if test='qnaSorting == "2"'>
+	       AND SQ.SPACE_QUESTION_ID IN (SELECT SPACE_ANSWER_ID
+		                                  FROM SPACE_ANSWER
+		                                 WHERE HOST_EMAIL = #{hostEmail})
+		</if>
+	</select>
+</mapper>

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sist.web.dao.ReviewReplyDao">
+	
+	<!-- 호스트 답변 resultMap -->
+	<resultMap type="com.sist.web.model.ReviewReply" id="hostReviewResultMap">
+		<id column="REPLY_ID" property="replyId" />
+		<result column="REVIEW_ID" property="reviewId" />
+		<result column="HOST_EMAIL" property="hostEmail" />
+		<result column="REPLY_CONTENT" property="replyContent" />
+		<result column="STATUS" property="status" />
+		<result column="REG_DATE" property="regDate" />
+		<result column="MODI_DATE" property="modiDate" />
+		<result column="DEL_DATE" property="delDate" />
+		<result column="HOST_NICKNAME" property="hostNickname" />
+	</resultMap>	
+	
+	<!-- 호스트 공간에 대한 호스트 답변 모두 조회 -->
+	<select id="hostReviewList" parameterType="long" resultMap="hostReviewResultMap">
+		SELECT NVL(R.REPLY_ID, 0) REPLY_ID,
+		       NVL(R.REVIEW_ID, 0) REVIEW_ID,
+		       NVL(R.HOST_EMAIL, '') HOST_EMAIL,
+		       NVL(R.REPLY_CONTENT, '') REPLY_CONTENT,
+		       NVL(R.STATUS, '') STATUS,
+		       NVL(TO_CHAR(R.REG_DATE, 'YYYY. MM. DD'), '') REG_DATE,
+		       NVL(TO_CHAR(R.MODI_DATE, 'YYYY. MM. DD'), '') MODI_DATE,
+		       NVL(TO_CHAR(R.DEL_DATE, 'YYYY. MM. DD'), '') DEL_DATE,
+		       NVL(H.HOST_NICKNAME, '') HOST_NICKNAME
+		  FROM REVIEW_REPLY R, HOST H
+		 WHERE R.HOST_EMAIL = H.HOST_EMAIL
+		   AND R.REVIEW_ID = #{reviewId}
+		 ORDER BY R.REG_DATE DESC
+	</select>
+	
+	<!-- 호스트 답글 -->
+	<insert id="insertReply" parameterType="com.sist.web.model.ReviewReply">
+	 	<!-- 선행 처리기 -->
+		<selectKey resultType="long" keyProperty="replyId" order="BEFORE">
+			SELECT SEQ_REPLY_ID.NEXTVAL FROM DUAL
+		</selectKey>
+		
+		INSERT INTO REVIEW_REPLY (
+		    REPLY_ID,
+		    REVIEW_ID,
+		    HOST_EMAIL,
+		    REPLY_CONTENT,
+		    STATUS,
+		    REG_DATE,
+		    MODI_DATE,
+		    DEL_DATE
+		) VALUES (
+		    #{replyId},
+		    #{reviewId},
+		    #{hostEmail},
+		    #{replyContent},
+		    #{status},
+		    SYSDATE,
+		    NULL,
+		    NULL
+		)
+	</insert>
+	
+	<!-- 답글 하나 조회 -->
+	<select id="replySelect" parameterType="long" resultMap="hostReviewResultMap">
+		SELECT NVL(R.REPLY_ID, 0) REPLY_ID,
+		       NVL(R.REVIEW_ID, 0) REVIEW_ID,
+		       NVL(R.HOST_EMAIL, '') HOST_EMAIL,
+		       NVL(R.REPLY_CONTENT, '') REPLY_CONTENT,
+		       NVL(R.STATUS, '') STATUS,
+		       NVL(TO_CHAR(R.REG_DATE, 'YYYY. MM. DD'), '') REG_DATE,
+		       NVL(TO_CHAR(R.MODI_DATE, 'YYYY. MM. DD'), '') MODI_DATE,
+		       NVL(TO_CHAR(R.DEL_DATE, 'YYYY. MM. DD'), '') DEL_DATE,
+		       NVL(H.HOST_NICKNAME, '') HOST_NICKNAME       
+		  FROM REVIEW_REPLY R, HOST H
+		 WHERE R.HOST_EMAIL = H.HOST_EMAIL
+		   AND REPLY_ID = #{replyId}
+	</select>
+	
+	<!-- 답글 수정 -->
+	<update id="updateReply" parameterType="com.sist.web.model.ReviewReply">
+		UPDATE REVIEW_REPLY
+		   SET REPLY_CONTENT = #{replyContent}
+		 WHERE REPLY_ID = #{replyId}
+	</update>
+	
+	<!-- 답글 삭제 -->
+	<update id="deleteReply" parameterType="com.sist.web.model.ReviewReply">
+		UPDATE REVIEW_REPLY
+		   SET STATUS = 'N'
+		 WHERE REPLY_ID = #{replyId}
+	</update>
+</mapper>

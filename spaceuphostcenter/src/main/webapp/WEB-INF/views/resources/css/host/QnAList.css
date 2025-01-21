@@ -1,0 +1,763 @@
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #ffffff;
+    display: flex;
+    /* 부모 요소에 플렉스 박스 설정 */
+    justify-content: center;
+    /* 가로 중앙 정렬 */
+    min-height: 100vh;
+    /* 세로 방향 화면 전체 사용 */
+    flex-direction: column;
+    align-items: center;
+}
+
+.space_management_title {
+    color: #ffffff;
+}
+
+.profile-page {
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-start;
+    margin: 20px;
+    gap: 20px;
+}
+
+.info-section {
+    flex: 1;
+    background: #ffffff;
+    padding: 100px 0;
+    min-height: 800px;
+    max-width: 1200px;
+    min-width: 1200px;
+    margin-top: 30px;
+}
+
+.tabs {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 30px;
+    margin-top: 5px;
+    background-color: #6FB5EB;
+    border-radius: 5px
+}
+
+.tab {
+    border: none;
+    background: none;
+    font-size: 15px;
+    color: #000000;
+}
+
+.btn {
+    display: inline-block;
+    text-align: center;
+    color: #000000;
+    border-radius: 5px;
+    text-decoration: none;
+}
+
+/*공간 번호, 공간 등록일*/
+.review_space_number {
+    color: #555 !important;
+    font-size: 15px !important;
+    font-weight: 600;
+    display: block;
+    padding-left: 20px;
+    padding-top: 20px;
+    cursor: pointer;
+}
+
+.review_space_number:hover {
+    color: #3395E5 !important;
+}
+
+.management_link_icon {
+    float: right;
+}
+
+/*페이징*/
+.paging {
+    display: flex;
+    gap: 5px;
+    justify-content: center;
+    align-items: center;
+}
+
+.btnPage {
+    padding: 8px 12px;
+    color: #000;
+    text-decoration: none;
+    border-radius: 50%;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.btnPage:hover {
+    padding: 8px 12px;
+    color: #002544;
+    text-decoration: none;
+    border-radius: 50%;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* 현재 페이지 스타일 (고정된 파란색) */
+.btnPage.active {
+    color: #3395E5;
+    background-color: none;
+    pointer-events: none; /* 클릭 이벤트 비활성화 */
+    text-decoration: underline;
+    text-underline-offset : 3px;
+}
+
+.bestSlidePrevBtn,
+.bestSlideNextBtn {
+    position: relative;
+    width: 30px;
+    height: 30px;
+    border: 2px solid #3395E5;
+    border-radius: 50px;
+    cursor: pointer;
+}
+
+.bestSlidePrevBtn:hover,
+.bestSlideNextBtn:hover {
+    background-color: #3395E5;
+}
+
+.bestSlidePrevBtn:hover:before,
+.bestSlideNextBtn:hover:before {
+    border-color: white;
+}
+
+.bestSlidePrevBtn:before {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    content: '';
+    width: 10px;
+    height: 10px;
+    border-top: 2px solid #3395E5;
+    border-right: 2px solid #3395E5;
+    transform: translate(-45%, -50%) rotate(225deg);
+}
+
+.bestSlideNextBtn:before {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    content: '';
+    width: 10px;
+    height: 10px;
+    border-top: 2px solid #3395E5;
+    border-right: 2px solid #3395E5;
+    transform: translate(-55%, -50%) rotate(45deg);
+}
+
+.review-search {
+    display: flex;
+    max-width: 1200px;
+    align-items: center;
+    justify-content: space-between;
+    margin: 50px 0 0 0;
+}
+
+/* 검색 창 */
+.search-bar {
+    display: flex;
+    padding: 17px 21px 15px 30px;
+    border-radius: 10px;
+    background-color: #f5f5f5;
+    align-items: center;
+    width: 77%;
+}
+
+.search-bar input {
+    flex: 1;
+    border: 0;
+    outline: none;
+    float: left;
+    background-color: transparent;
+    font-size: 15px;
+}
+
+.search-bar button {
+    height: 100%;
+    border: 0;
+    background-color: #f5f5f5;
+    color: white;
+    border-radius: 10px;
+    outline: none;
+    float: left;
+    cursor: pointer;
+}
+
+/* 셀렉박스 */
+.review-sort {
+    width: 200px;
+}
+
+.qnaSorting {
+    background-color: #f5f5f5;
+    /* 배경은 흰색 */
+    color: #000;
+    /* 텍스트는 검정색 */
+    border: none;
+    /* 파란색 테두리 */
+    padding: 15px;
+    /* 여백 */
+    border-radius: 8px;
+    /* 모서리 둥글게 */
+    font-size: 16px;
+    /* 폰트 크기 */
+    width: 200px;
+    height: 60px;
+    outline-style: none;
+}
+
+/* 리뷰 박스 */
+.box_review {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffffff;
+    /* 검색창 배경색 */
+}
+
+.box_inner_se {
+    width: 100%;
+    max-width: 1200px;
+    /* 검색창의 최대 너비 */
+    padding: 15px 40px;
+    border: 1px solid #ccc;
+    /* 연두색 테두리 */
+    border-radius: 10px;
+    background-color: #ffffff;
+    /* 내부 배경색 */
+    margin: 20px 0 30px 0;    
+}
+
+.review_sorting option {
+    background-color: #fff;
+    /* option 배경은 흰색 */
+    color: #000;
+    /* option 텍스트는 검정색 */
+}
+
+/* 코멘트 컨테이너*/
+.comment-list {
+    margin-top: 20px;
+}
+
+.review_start {
+    margin-bottom: 20px;
+    background-color: #f9f9f9;
+    white-space: normal;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.review_start hr {
+    background:rgb(209, 209, 211);
+    height:1px;
+    border:0;
+    width: 1020px;
+}
+
+.comment {
+    display: flex;
+    align-items: flex-start;
+    padding: 10px;
+    border-radius: 4px;
+    margin-top: 10px;
+}
+
+.comment .comment-header {
+    font-weight: bold;
+    color: #555;
+}
+
+.comment .comment-content {
+    margin-top: 5px;
+    color: #333;
+}
+
+
+.comment-image {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 0.5px solid #fefefe;
+    margin-right: 15px;
+}
+
+.comment-details {
+    flex: 1;
+}
+
+.comment-header {
+    display: flex;
+    align-items: flex-start;
+    color: #555;
+    margin-bottom: 5px;
+    align-content: stretch;
+    justify-content: flex-start;
+    flex-direction: column;
+
+}
+
+.commnet-header-sorting {
+    display: flex;
+
+}
+
+
+.comment-header .nickname {
+    color: #333;
+}
+
+.comment-header .comment-date {
+    color: #72787f;
+    font-weight: 100;
+    font-size: 14px;
+    align-self: flex-start !important;
+}
+
+.comment-date {
+    align-self: flex-start !important;
+}
+
+.comment-content {
+    color: #333;
+    margin-top: 5px;
+}
+
+/* 관리자 답변 센션*/
+.manegementComment {
+    display: flex;
+    align-items: flex-start;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.manegementComment .manegementComment-header {
+    font-weight: bold;
+    color: #555;
+}
+
+.manegementComment .manegementComment-content {
+    margin-top: 5px;
+    color: #333;
+}
+
+
+.manegementComment-image {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    /* 동그란 이미지 */
+    margin-right: 10px;
+}
+
+.manegementComment-details {
+    flex: 1;
+}
+
+.manegementComment-header {
+    display: flex;
+    align-items: flex-start;
+    font-weight: bold;
+    color: #555;
+    margin-bottom: 5px;
+    align-content: stretch;
+    justify-content: flex-start;
+    flex-direction: column;
+
+}
+
+.commnet-header-sorting1 {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.commnet-header-sorting2 {
+    display: flex;
+    gap: 10px;
+}
+
+.manegementCommnet-header-sorting1 {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+
+.manegementComment-header .manegementNickname {
+    color: #333;
+}
+
+.manegementComment-header .manegementComment-date {
+    color: #72787f;
+    font-weight: 100;
+    font-size: 14px;
+    align-self: flex-start !important;
+}
+
+.manegementComment-date {
+    align-self: flex-start !important;
+}
+
+.manegementComment-content {
+    color: #333;
+    margin-top: 5px;
+}
+
+.manegementComment-wrapper {
+  text-align: center; /* To center-align the text and image */
+  margin-bottom: 10px; /* To add space between each comment block, adjust as needed */
+}
+
+.qna-regDate {
+  font-size: 13px;
+  font-weight: bold;
+  color: rgb(255, 72, 72, 0.93);
+  margin-left: 50px;
+}
+
+.qna-regDate.completed {
+  color: #36BC9B;
+}
+
+.manegementComment-image {
+  display: block;
+  margin-right: 15px; 
+}
+
+
+
+/* 답변 섹션 */
+/* 리뷰 관리자 버튼 */
+.comment-section>button {
+    color: #000;
+    /* 텍스트는 검정색 */
+    border: 2px solid #006ac2;
+    /* 파란색 테두리 */
+    background-color: #ffffff;
+    border-radius: 5px;
+    /* 모서리 둥글게 */
+    font-size: 15px;
+    /* 폰트 크기 */
+}
+
+.comment-section>button:hover {
+    background-color: #3395E5;
+    border-color: white;
+    color: #ffffff;
+    /* 텍스트 흰색 */
+}
+
+.review_manegement {
+    margin-bottom: 20px;
+}
+
+
+.comment-section__comment-form {
+	display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px 45px;
+    width: 970px;
+}
+
+.replyContent {
+    color: #000;
+    border: 1px solid #006ac2;
+    background-color: #ffffff;
+    border-radius: 5px;
+    font-size: 15px;
+    margin-top: 5px;
+    width: 100%;
+    height: 100px;
+    resize: none;
+    padding: 20px;
+    outline-style: none;
+}
+
+.viewCommentForm {
+	display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px 45px;
+    width: 970px;
+}
+
+.viewTwoCommContent {
+    color: #000;
+    border: 1px solid #006ac2;
+    background-color: #ffffff;
+    border-radius: 5px;
+    font-size: 15px;
+    margin-top: 5px;
+    width: 100%;
+    height: 100px;
+    resize: none;
+    padding: 20px;
+    outline-style: none;
+}
+
+.comment-section__submit-comment-btn {
+    color: #000;    
+    border: 1px solid #006ac2;
+    background-color: #ffffff;
+    border-radius: 5px;
+    font-size: 15px;
+    margin-bottom: 5px;
+    padiing: 5px;
+    outline-style: none;
+    margin-top: 10px;
+    width: 120px;
+    height: 40px;
+}
+
+.comment-section__submit-comment-btn:hover {
+    background-color: #3395E5;
+    border-color: white;
+    color: #ffffff;
+    /* 텍스트 흰색 */
+}
+
+.btnViewTwoCommUp {
+    color: #000;
+    border: 1px solid #006ac2;
+    background-color: #ffffff;
+    border-radius: 5px;
+    font-size: 15px;
+    margin-bottom: 5px;
+    padiing: 5px;
+    outline-style: none;
+    margin-top: 10px;
+    width: 120px;
+    height: 40px;
+}
+
+.btnViewTwoCommUp:hover {
+    background-color: #3395E5;
+    border-color: white;
+    color: #ffffff;
+    /* 텍스트 흰색 */
+}
+
+/* 별 평점 */
+.star-rating {
+    display: flex;
+    /* 가로로 정렬 */
+    justify-content: center;
+    /* 가운데 정렬 */
+    gap: 5px;
+    /* 별 간격 */
+    font-size: 16px;
+    /* 별 크기 */
+    color: #ccc;
+    /* 기본 별 색상 (회색) */
+    cursor: pointer;
+}
+
+.star:hover,
+.star:hover~.star {
+    color: gold;
+    /* 마우스 올릴 때 색상 */
+}
+
+.star.active {
+    color: gold;
+    /* 선택된 별의 색상 */
+}
+
+/* 드롭다운 버튼 스타일 */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropbtn {
+    color: #000;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    background-color: #f9f9f9;
+}
+
+/* 드롭다운 메뉴 숨김 처리 */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    min-width: 160px;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
+    z-index: 1;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+/* 드롭다운 메뉴 항목 스타일 */
+.dropdown-content button:last-child {
+	color: black;
+    background-color: #ffffff;
+    padding: 12px 16px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-weight: bold;
+    width: 100%;
+    font-size: 16px;
+    text-align: left;
+    text-decoration: none;
+    display: block;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+.dropdown-content button:first-child {
+	color: black;
+    background-color: #ffffff;
+    padding: 12px 16px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-weight: bold;
+    width: 100%;
+    font-size: 16px;
+    text-align: left;
+    text-decoration: none;
+    display: block;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+.dropdown-content button {
+	color: black;
+    background-color: #ffffff;
+    padding: 12px 16px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-weight: bold;
+    width: 100%;
+    font-size: 16px;
+    text-align: left;
+    text-decoration: none;
+    display: block;
+    border-radius: 0;
+}
+
+/* 마우스를 올리면 드롭다운 메뉴 항목 배경 색 변경 */
+.dropdown-content button:hover {
+    background-color: #f3f3f3;
+    border: none;
+}
+
+/* 버튼을 클릭하면 드롭다운 메뉴가 나타나도록 */
+.dropdown:hover .dropdown-content {
+    display: block;
+}
+
+/* 별점 */
+.rating {
+	margin: 5px 0;
+}
+.rating img {
+	width: 20px;
+}
+
+/* 신고하기 */
+.rating2 {
+    color: orange;
+    font-weight: bold;
+}
+
+.QnAContentDiv{
+	display: flex;
+}
+
+.QnAContentLeftDiv{
+	width: 20%;
+}
+
+.QnAContentRightDiv{
+	width: 80%;
+}
+
+
+.QnAOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5); /* 검은색 반투명 */
+    z-index: 2000; /* 다른 요소보다 위에 표시 */
+    display: none; /* 기본적으로 숨김 */
+    overflow: hidden; /* 배경에서 스크롤 방지 */
+}
+
+/* 흰색 슬라이드 div */
+.QnASlideUpDiv {
+    position: fixed;
+    bottom: -100%; /* 처음에는 화면 아래에 숨김 */
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgb(255, 255, 255);
+    border-radius: 22px;
+    width: 350px;
+    transition: bottom 0.5s ease-in-out; /* 부드러운 슬라이드 효과 */
+    padding: 30px 50px 30px 50px;
+}
+
+.QnAHeaderDiv{
+	display: grid;
+    justify-items: center;
+}
+.QnAHeaderDiv {
+	display: grid;
+    justify-items: center;
+}
+
+.QnAContentHeaderDiv{
+    margin-top: 30px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.QnAContentHeaderDiv > div > span{
+	font-size: 12px;
+	font-weight: bold;
+	color: #828181b3;
+}
+.QnAContentDiv{
+	margin-top: 8px;
+    height: 280px;
+    padding: 14px;
+    border-radius: 4px;
+    border: solid 1px #828181b3;
+}
+
+.submitWrite {
+	margin-top: 20px;
+	background-color: #3395E5;
+    height: 50px;
+    border-radius: 8px;
+    cursor: pointer;
+    border: none;
+    width: 100%;
+    font-size: 17px;
+}
+
+.inputQuestionCount.over-limit {
+	color: red; /* 제한 초과 시 빨간색 */
+}

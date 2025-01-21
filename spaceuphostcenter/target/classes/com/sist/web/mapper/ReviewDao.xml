@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sist.web.dao.ReviewDao">
+	<!-- 게스트 리뷰 조회 resultMap -->
+	<resultMap type="com.sist.web.model.Review" id="reviewResultMap">
+		<id column="REVIEW_ID" property="reviewId" />
+		<result column="RESERVATION_ID" property="reservationId" />
+		<result column="REVIEW_SCORE" property="reviewScore" />
+		<result column="REVIEW_CONTENT" property="reviewContent" />
+		<result column="STATUS" property="status" />
+		<result column="REG_DATE" property="regDate" />
+		<result column="MODI_DATE" property="modiDate" />
+		<result column="DEL_DATE" property="delDate" />
+		<result column="SPACE_NAME" property="spaceName" />
+		<result column="SPACE_ADDR" property="spaceAddr" />
+		<result column="SPACE_ID" property="spaceId" />
+		<result column="SPACE_TYPE" property="spaceType"/>
+		<result column="GUEST_NICKNAME" property="guestNickname" />
+		<result column="GUEST_EMAIL" property="guestEmail" />
+		<result column="HOST_EMAIL" property="hostEmail" />
+	</resultMap>
+	
+	<!-- 게스트 작성한 리뷰 조회 -->
+	<select id="myReviewList" parameterType="com.sist.web.model.Review" resultMap="reviewResultMap">
+		SELECT
+		    REVIEW_ID,
+		    RESERVATION_ID,
+		    REVIEW_SCORE,
+		    REVIEW_CONTENT,
+		    STATUS,
+		    REG_DATE,
+		    MODI_DATE,
+		    DEL_DATE,
+		    SPACE_NAME,
+		    SPACE_ADDR,
+		    SPACE_ID,
+		    SPACE_TYPE,
+		    GUEST_NICKNAME,
+		    GUEST_EMAIL
+		  FROM(SELECT ROWNUM AS RNUM,
+		            REVIEW_ID,
+		            RESERVATION_ID,
+		            REVIEW_SCORE,
+		            REVIEW_CONTENT,
+		            STATUS,
+		            REG_DATE,
+		            MODI_DATE,
+		            DEL_DATE,
+		            SPACE_NAME,
+		            SPACE_ADDR,
+		            SPACE_ID,
+		            SPACE_TYPE,
+		            GUEST_NICKNAME,
+		            GUEST_EMAIL
+		         FROM (SELECT
+		                    RV.REVIEW_ID REVIEW_ID,
+		                    RV.RESERVATION_ID RESERVATION_ID,
+		                    NVL(RV.REVIEW_SCORE, 0) REVIEW_SCORE,
+		                    NVL(RV.REVIEW_CONTENT, '') REVIEW_CONTENT,
+		                    NVL(RV.STATUS, '') STATUS,
+		                    NVL(TO_CHAR(RV.REG_DATE, 'YYYY. MM. DD'), '') REG_DATE,
+		                    NVL(TO_CHAR(RV.MODI_DATE, 'YYYY. MM. DD'), '') MODI_DATE,
+		                    NVL(TO_CHAR(RV.DEL_DATE, 'YYYY. MM. DD'), '') DEL_DATE,
+		                    NVL(SP.SPACE_NAME, '') SPACE_NAME,
+		                    NVL(SP.SPACE_ADDR, '') SPACE_ADDR,
+		                    SP.SPACE_ID SPACE_ID,
+		                    SP.SPACE_TYPE SPACE_TYPE,
+		                    GUEST_NICKNAME GUEST_NICKNAME,
+		                    RS.GUEST_EMAIL GUEST_EMAIL
+		                 FROM REVIEW RV
+		                 JOIN RESERVATION RS ON RV.RESERVATION_ID = RS.RESERVATION_ID
+		                 JOIN SPACE SP ON RS.SPACE_ID = SP.SPACE_ID
+		                 JOIN GUEST GS ON RS.GUEST_EMAIL = GS.GUEST_EMAIL
+		                 LEFT JOIN REVIEW_REPLY RP ON RP.REVIEW_ID = RV.REVIEW_ID
+		                WHERE SP.SPACE_ID IN (SELECT SPACE_ID
+		                                        FROM SPACE
+		                                       WHERE HOST_EMAIL = #{hostEmail})		                
+
+		           <!-- 공간 번호 조회 -->
+	               <if test='searchValue != null and searchValue != ""'>		            	
+	                      AND SP.SPACE_ID = #{searchValue}
+	               </if>
+	               
+	               <!-- 1.답변 미작성 2.답변 완료 --> 
+			       <if test='reviewSorting == "1"'>
+						  AND RV.REVIEW_ID NOT IN (SELECT REVIEW_ID
+							                         FROM REVIEW_REPLY
+							                        WHERE HOST_EMAIL = #{hostEmail})
+		           </if>
+		           
+		           <if test='reviewSorting == "2"'>
+						  AND RV.REVIEW_ID IN (SELECT REVIEW_ID
+							                     FROM REVIEW_REPLY
+							                    WHERE HOST_EMAIL = #{hostEmail})
+		           	</if>
+		           		
+	               
+		                ORDER BY RV.REG_DATE DESC))
+		 WHERE RNUM <![CDATA[>=]]> #{startRow}
+		   AND RNUM <![CDATA[<=]]> #{endRow}
+	</select>
+	
+	<!-- 작성한 리뷰 총게시물 수 -->
+  	<select id="myReviewCount" parameterType="com.sist.web.model.Review" resultType="long">
+		SELECT COUNT(RV.REVIEW_ID) AS CNT
+		  FROM REVIEW RV
+		  JOIN RESERVATION RS ON RV.RESERVATION_ID = RS.RESERVATION_ID
+		  JOIN SPACE SP ON RS.SPACE_ID = SP.SPACE_ID
+		  JOIN GUEST GS ON RS.GUEST_EMAIL = GS.GUEST_EMAIL
+		  LEFT JOIN REVIEW_REPLY RP ON RP.REVIEW_ID = RV.REVIEW_ID
+		 WHERE SP.SPACE_ID IN (SELECT SPACE_ID
+		                         FROM SPACE
+		                        WHERE HOST_EMAIL = #{hostEmail})
+       <if test='searchValue != null and searchValue != ""'>		            	
+           AND SP.SPACE_ID = #{searchValue}
+       </if>
+       
+       <!-- 1.답변 미작성 2.답변 완료 --> 
+       <if test='reviewSorting == "1"'>
+		   AND RV.REVIEW_ID NOT IN (SELECT REVIEW_ID
+			                          FROM REVIEW_REPLY
+			                         WHERE HOST_EMAIL = #{hostEmail})
+      </if>
+          
+      <if test='reviewSorting == "2"'>
+		  AND RV.REVIEW_ID IN (SELECT REVIEW_ID
+			                     FROM REVIEW_REPLY
+			                    WHERE HOST_EMAIL = #{hostEmail})
+      </if>
+       
+  	</select>	
+</mapper>

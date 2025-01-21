@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sist.web.dao.SettlementDao">
+
+	<resultMap type="com.sist.web.model.Settlement" id="settlementResultMap">
+		<id column="SETTLEMENT_ID" property="settlementId" />
+		<result column="HOST_EMAIL" property="hostEmail" />
+		<result column="SETTLEMENT_AMOUNT" property="settlementAmount" />
+		<result column="STATUS" property="status" />
+		<result column="SETTLEMENT_DATE" property="settlementDate" />
+		<result column="PAY_COUNT" property="payCount" />
+	</resultMap>
+	
+	<!-- 정산 리스트 -->
+	<select id="settlementList" parameterType="com.sist.web.model.Settlement" resultMap="settlementResultMap">
+		SELECT SETTLEMENT_ID,
+		        HOST_EMAIL,
+		        SETTLEMENT_AMOUNT,
+		        STATUS,
+		        SETTLEMENT_DATE,
+		        PAY_COUNT
+		  FROM (SELECT ROWNUM AS RNUM,
+		                SETTLEMENT_ID,
+		                HOST_EMAIL,
+		                SETTLEMENT_AMOUNT,
+		                STATUS,
+		                SETTLEMENT_DATE,
+		                PAY_COUNT
+		          FROM (SELECT SETTLEMENT_ID,
+		                        HOST_EMAIL,
+		                        NVL(SETTLEMENT_AMOUNT, 0) SETTLEMENT_AMOUNT,
+		                        NVL(STATUS, 'N') STATUS,
+		                        NVL(TO_CHAR(SETTLEMENT_DATE, 'YYYY.MM.DD'), '') SETTLEMENT_DATE,
+		                        NVL(PAY_COUNT, 0) PAY_COUNT
+		                  FROM SETTLEMENT
+		                 WHERE HOST_EMAIL = #{hostEmail}
+		                 
+		            	<if test='searchValue != null and searchValue != ""'>
+		            	   AND SETTLEMENT_ID = #{searchValue}
+		            	</if>
+		                 
+		                 
+		                 ORDER BY SETTLEMENT_ID DESC))
+		 WHERE RNUM <![CDATA[>=]]> #{startRow}
+		   AND RNUM <![CDATA[<=]]> #{endRow}
+	</select>
+	
+	<!-- 정산 총게시물 수 -->
+	<select id="settlementCount" parameterType="com.sist.web.model.Settlement" resultType="long">
+		SELECT COUNT(SETTLEMENT_ID) CNT
+		  FROM SETTLEMENT
+		 WHERE HOST_EMAIL = #{hostEmail}
+		 
+		 <if test='searchValue != null and searchValue != ""'>
+		   AND SETTLEMENT_ID = #{searchValue}
+		 </if>
+		 
+	</select>
+	
+	<!-- 정산 insert(자동) -->
+	<insert id="insertSettlement" parameterType="String">
+		<!-- 선행 처리기 -->
+		<selectKey resultType="long" keyProperty="settlementId" order="BEFORE">
+			SEQ_SETTLEMENT_ID.NEXTVAL FROM DUAL
+		</selectKey>
+		
+		INSERT INTO settlement (SETTLEMENT_ID, HOST_EMAIL, SETTLEMENT_AMOUNT, STATUS, SETTLEMENT_DATE, PAY_COUNT)
+		VALUES (
+		    #{settlementId},
+		    #{hostEmail},
+		    (SELECT COALESCE(SUM(p.AMOUNT), 0)
+		     FROM payment p
+		     JOIN reservation r ON p.RESERVATION_ID = r.RESERVATION_ID
+		     JOIN space s ON r.SPACE_ID = s.SPACE_ID
+		     WHERE s.HOST_EMAIL = #{hostEmail}
+		       AND r.STATUS = 'C'
+		       AND p.REG_DATE BETWEEN TRUNC(ADD_MONTHS(SYSDATE, -1), 'MONTH')
+		                     AND LAST_DAY(ADD_MONTHS(SYSDATE, -1))),
+		    'Y',
+		    SYSDATE,
+		    (SELECT COALESCE(COUNT(p.PAYMENT_ID), 0)
+		     FROM payment p
+		     JOIN reservation r ON p.RESERVATION_ID = r.RESERVATION_ID
+		     JOIN space s ON r.SPACE_ID = s.SPACE_ID
+		     WHERE s.HOST_EMAIL = #{hostEmail}
+		       AND r.STATUS = 'C'
+		       AND p.REG_DATE BETWEEN TRUNC(ADD_MONTHS(SYSDATE, -1), 'MONTH')
+		                     AND LAST_DAY(ADD_MONTHS(SYSDATE, -1)))
+		)
+	</insert>
+	
+	<!-- 정산 가능한 호스트 리스트 조회 -->
+	<select id="getHostList" resultType="String">
+		SELECT s.HOST_EMAIL
+		FROM payment p
+		JOIN reservation r ON p.RESERVATION_ID = r.RESERVATION_ID
+		JOIN space s ON r.SPACE_ID = s.SPACE_ID
+		WHERE r.STATUS = 'C'
+		  AND p.REG_DATE BETWEEN TRUNC(ADD_MONTHS(SYSDATE, -1), 'MONTH')
+		                     AND LAST_DAY(ADD_MONTHS(SYSDATE, -1))
+		GROUP BY s.HOST_EMAIL
+		HAVING SUM(p.AMOUNT) != 0
+	</select>
+</mapper>
